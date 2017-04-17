@@ -48,6 +48,7 @@ public class Main {
         butPanel.add(n);
 
 
+        
         JButton button1 = new JButton("Добавить точку");
         button1.setBounds(2, 100, 160, 40);
         butPanel.add(button1);
