@@ -1,4 +1,4 @@
-package com.bot;
+package com.problem;
 
 import javax.swing.*;
 import java.awt.*;

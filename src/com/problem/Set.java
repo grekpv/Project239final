@@ -1,3 +1,5 @@
+package com.problem;
+
 /**
  * Created by Юлия on 12.03.2017.
  */
@@ -6,7 +8,7 @@ public class Set {
 
     Dot[] arr;
 
-    Set (int quantity) {
+    Set(int quantity) {
         this.quantity = quantity;
         arr = new Dot[quantity];
     }

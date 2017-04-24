@@ -1,9 +1,11 @@
+package com.problem;
+
 /**
- * Created by Юлия on 12.03.2017.
+ * Created by Юлия on 23.04.2017.
  */
 import java.util.Scanner;
 
-public class Main {
+public class Main2 {
     public static void main(String[] args ){
         Scanner sc = new Scanner(System.in);
         int n = sc.nextInt();
@@ -11,7 +13,7 @@ public class Main {
         double radius1 = sc.nextDouble();
         double radius2 = sc.nextDouble();
 
-        // Создаём новый объект типа Set. Передаём в качестве параметра количество точек в наборе.
+        // Создаём новый объект типа 1S1e1t. Передаём в качестве параметра количество точек в наборе.
         Set setObject = new Set(n);
 
         int x1;
