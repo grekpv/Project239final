@@ -7,11 +7,15 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Arc2D;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.StringTokenizer;
 
 public class Main {
+
     private static ArrayList<Point> points = new ArrayList<Point>();
     private static ArrayList<Circle> circles = new ArrayList<Circle>();
     public static void createGUI() {
@@ -49,6 +53,7 @@ public class Main {
         final JTextField n = new JTextField();
         n.setBounds(35,70,25,25);
         butPanel.add(n);
+
 
 
         JLabel R1 = new JLabel("R1:");
@@ -158,15 +163,15 @@ public class Main {
 
                         // Если i-й точки до j-й точки расстояние меньше первого радиуса, то j-я точка входит в
                         // окружность первого радиуса вокруг первой точки.
-                        if (Math.sqrt( Math.pow(points.get(i).x - points.get(j).x, 2) +
-                                Math.pow(points.get(i).y - points.get(j).y, 2)) < R1) {
+                        double dist = Math.sqrt( Math.pow(points.get(i).x - points.get(j).x, 2) +
+                                Math.pow(points.get(i).y - points.get(j).y, 2));
+                        if (dist < R1 / 2) {
 
                             cnt1[i]++;
                             cnt1[j]++;
                         }
 
-                        if (Math.sqrt( Math.pow(points.get(i).x - points.get(j).x, 2) +
-                                Math.pow(points.get(i).y - points.get(j).y, 2)) < R2) {
+                        if (dist < R2 / 2) {
 
                             cnt2[i]++;
                             cnt2[j]++;
@@ -178,15 +183,15 @@ public class Main {
                     for (int j = i + 1; j < points.size(); j++) {
                         if (cnt1[i] == cnt2[j]) {
 
-                            Circle b = new Circle(points.get(i).x, points.get(i).y, R1);
+                            Circle b = new Circle(points.get(i).x + R1 / 2, points.get(i).y + R1 / 2, R1);
                             circles.add(b);
-                            b.setBounds(1, 1, 4000, 4000);
+                            b.setBounds(1, 1, 700, 700);
                             pointpane.add(b);
 
 
-                            Circle c = new Circle(points.get(j).x, points.get(j).y, R1);
+                            Circle c = new Circle(points.get(j).x + R2 / 2, points.get(j).y + R2 / 2, R2);
                             circles.add(c);
-                            c.setBounds(1, 1, 4000, 4000);
+                            c.setBounds(1, 1, 700, 700);
                             pointpane.add(c);
 
                             pointpane.revalidate();
@@ -205,6 +210,83 @@ public class Main {
         button4.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+
+                int R1 = (!r1.getText().equals("") ? Integer.parseInt(r1.getText()) : 0);
+                int R2 = (!r2.getText().equals("") ? Integer.parseInt(r2.getText()) : 0);
+
+                int[] cnt1 = new int[points.size()];
+                int[] cnt2 = new int[points.size()];
+                for (int i = 0; i < points.size(); i++) {
+                    for (int j = i + 1; j < points.size(); j++) {
+
+                        // Если i-й точки до j-й точки расстояние меньше первого радиуса, то j-я точка входит в
+                        // окружность первого радиуса вокруг первой точки.
+                        if (Math.sqrt( Math.pow(points.get(i).x - points.get(j).x, 2) +
+                                Math.pow(points.get(i).y - points.get(j).y, 2)) < R1 / 2) {
+
+                            cnt1[i]++;
+                            cnt1[j]++;
+                        }
+
+                        if (Math.sqrt( Math.pow(points.get(i).x - points.get(j).x, 2) +
+                                Math.pow(points.get(i).y - points.get(j).y, 2)) < R2 / 2) {
+
+                            cnt2[i]++;
+                            cnt2[j]++;
+                        }
+                    }
+                }
+
+                for (int i = 0; i < points.size(); i++) {
+                    for (int j = i + 1; j < points.size(); j++) {
+                        if (cnt1[i] == cnt2[j]) {
+
+                            try {
+                                PrintStream fout = new PrintStream(new File("out.txt"));
+                                fout.println("R1 = " + R1);
+
+                                for (int ii = 0; ii < points.size(); ii++) {
+                                    if (i == ii) {
+                                        continue;
+                                    }
+                                    // Если i-й точки до j-й точки расстояние меньше первого радиуса, то j-я точка входит в
+                                    // окружность первого радиуса вокруг первой точки.
+                                    if (Math.sqrt( Math.pow(points.get(i).x - points.get(ii).x, 2) +
+                                            Math.pow(points.get(i).y - points.get(ii).y, 2)) < R1) {
+
+
+
+                                        fout.println("" + points.get(ii).x + " " + points.get(ii).y);
+                                        break;
+                                    }
+                                }
+
+                                fout.println("R2 = " + R2);
+
+                                for (int ii = 0; ii < points.size(); ii++) {
+                                    if (j == ii) {
+                                        continue;
+                                    }
+                                    // Если i-й точки до j-й точки расстояние меньше первого радиуса, то j-я точка входит в
+                                    // окружность первого радиуса вокруг первой точки.
+                                    if (Math.sqrt( Math.pow(points.get(j).x - points.get(ii).x, 2) +
+                                            Math.pow(points.get(j).y - points.get(ii).y, 2)) < R2) {
+
+
+                                        fout.println("" + points.get(ii).x + " " + points.get(ii).y);
+                                        break;
+                                    }
+                                }
+
+                            }
+                            catch (Exception ex) {
+
+                            }
+
+                            return;
+                        }
+                    }
+                }
             }
         });
         button4.setBounds(2,250,160,40);
@@ -214,6 +296,45 @@ public class Main {
         button5.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+
+                Scanner fin = null;
+                PrintStream fout = null;
+
+                try {
+
+                    fin = new Scanner(new File("In.txt"));
+
+                    if (fin.hasNextInt()) {
+                        r1.setText("" + fin.nextInt());
+                    }
+
+                    if (fin.hasNextInt()) {
+                        r2.setText("" + fin.nextInt());
+                    }
+
+                    while (fin.hasNextInt()) {
+                        int x = fin.nextInt();
+                        int y = 0;
+
+                        if (fin.hasNextInt()) {
+                            y = fin.nextInt();
+                        }
+                        else {
+                            // Информация об ошибке. Количество координат нечётное
+                            return;
+                        }
+
+                        Point b = new Point(x, y);
+                        points.add(b);
+                        b.setBounds(b.x, b.y, b.x + 3, b.y + 3);
+                        pointpane.add(b);
+                        pointpane.revalidate();
+                        pointpane.repaint();
+                    }
+                }
+                catch (FileNotFoundException ex) {
+                    // Сообщение об ошибке - нет файла
+                }
             }
         });
         button5.setBounds(2,300,160,40);
