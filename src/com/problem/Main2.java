@@ -1,4 +1,4 @@
-package com.bot;
+package com.problem;
 
 /**
  * Created by Юлия on 23.04.2017.
@@ -13,7 +13,7 @@ public class Main2 {
         double radius1 = sc.nextDouble();
         double radius2 = sc.nextDouble();
 
-        // Создаём новый объект типа Set. Передаём в качестве параметра количество точек в наборе.
+        // Создаём новый объект типа 1S1e1t. Передаём в качестве параметра количество точек в наборе.
         Set setObject = new Set(n);
 
         int x1;

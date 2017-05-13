@@ -1,4 +1,4 @@
-package com.bot;
+package com.problem;
 
 /**
  * Created by Юлия on 12.03.2017.
